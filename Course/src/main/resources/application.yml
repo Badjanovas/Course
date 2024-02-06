@@ -1,0 +1,20 @@
+# Database
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/IT%20Course
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: bambeklis258
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+  output:
+    ansi:
+      enabled: ALWAYS
+
+server:
+  port: 1234
+
+
