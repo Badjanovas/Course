@@ -13,7 +13,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class StudentValidator {
-    public void exceptionEmptyStudentList(final List<Student> students, String costumeMessage) throws NoStudentFoundException {
+    public void exceptionEmptyStudentList(final List<Student> students,final String costumeMessage) throws NoStudentFoundException {
         if (students.isEmpty()) {
             log.error("No students were found in DB!" + costumeMessage);
             throw new NoStudentFoundException("No students were found in DB!" + costumeMessage);

@@ -14,14 +14,14 @@ import java.util.regex.Pattern;
 @Service
 @Slf4j
 public class EmailValidator {
-    public void exceptionNoPdfFile(Path attachmenPath) throws NoPdfFileException, IOException {
+    public void exceptionNoPdfFile(final Path attachmenPath) throws NoPdfFileException, IOException {
         if (!Files.exists(attachmenPath) || Files.size(attachmenPath) == 0){
             log.error("No PDF file was found or the file is empty.");
             throw new NoPdfFileException("No PDF file was found or the file is empty.");
         }
     }
 
-    public void exceptionIncorrectEmailFormat(String email) throws IncorrectEmailFormatException {
+    public void exceptionIncorrectEmailFormat(final String email) throws IncorrectEmailFormatException {
         final String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         final Pattern emailPattern = Pattern.compile(emailRegex);
 

@@ -8,7 +8,6 @@ import com.example.Course.service.PdfService;
 import com.example.Course.service.StudentService;
 import com.example.Course.service.TeacherService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,45 +29,46 @@ public class TeacherController {
 
     @GetMapping("/")
     public ResponseEntity<?> findAll() throws NoTeachersFoundException {
-            return ResponseEntity.status(HttpStatus.OK).body(teacherService.getAllTeachers());
+        return ResponseEntity.status(HttpStatus.OK).body(teacherService.getAllTeachers());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable final Long id) throws NotValidIdException, NoTeachersFoundException {
-            return ResponseEntity.status(HttpStatus.OK).body(teacherService.findById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(teacherService.findById(id));
     }
 
     @GetMapping("/experienced/{experience}")
     public ResponseEntity<?> findByExperience(@PathVariable final Integer experience) throws NotValidExperienceException, NoTeachersFoundException {
-            return ResponseEntity.status(HttpStatus.OK).body(teacherService.findTeachersByExperience(experience));
+        return ResponseEntity.status(HttpStatus.OK).body(teacherService.findTeachersByExperience(experience));
     }
 
     @PostMapping("/")
     public ResponseEntity<?> addNewTeacher(@RequestBody final Teacher teacher) throws MandatoryFieldException {
-            return ResponseEntity.status(HttpStatus.OK).body(teacherService.addNewTeacher(teacher));
+        return ResponseEntity.status(HttpStatus.OK).body(teacherService.addNewTeacher(teacher));
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTeacher(@PathVariable final Long id) throws NotValidIdException, NoTeachersFoundException {
-            return ResponseEntity.status(HttpStatus.OK).body(teacherService.deleteTeacher(id));
+        return ResponseEntity.status(HttpStatus.OK).body(teacherService.deleteTeacher(id));
     }
 
     @PutMapping("/update/{id}")
     public ResponseEntity<?> updateTeacher(@PathVariable final Long id, @RequestBody final Teacher teacher) throws NotValidIdException, NoTeachersFoundException, SameInformationException {
-            return ResponseEntity.status(HttpStatus.OK).body(teacherService.updateTeacherById(id, teacher));
+        return ResponseEntity.status(HttpStatus.OK).body(teacherService.updateTeacherById(id, teacher));
     }
 
     @GetMapping("/generatepdf/{teacherId}/{studentId}")
-    public ResponseEntity<?>  createPdf(@PathVariable final Long teacherId, @PathVariable final Long studentId) throws NotValidIdException, NoTeachersFoundException, NoStudentFoundException, FileNotFoundException, MalformedURLException {
-        Teacher teacher = teacherService.findById(teacherId);
-        Student student = studentService.findById(studentId);
+    public ResponseEntity<?> createPdf(@PathVariable final Long teacherId, @PathVariable final Long studentId) throws NotValidIdException, NoTeachersFoundException, NoStudentFoundException, FileNotFoundException, MalformedURLException {
+        final Teacher teacher = teacherService.findById(teacherId);
+        final Student student = studentService.findById(studentId);
 
         pdfService.pdfGenerator(teacher, student);
         return ResponseEntity.status(HttpStatus.OK).body("PDF file created successfully.");
     }
+
     @GetMapping("/sendinvoice/{email}")
     public ResponseEntity<?> sendInvoice(@PathVariable final String email) throws MessagingException, IOException, NoPdfFileException, IncorrectEmailFormatException {
-        emailSendingService.sendEmailWithAttachment(email,"Invoice", "Hello, i am attaching invoice for your studies.");
+        emailSendingService.sendEmailWithAttachment(email, "Invoice", "Hello, i am attaching invoice for your studies.");
         return ResponseEntity.status(HttpStatus.OK).body("Email was sent.");
     }
 }

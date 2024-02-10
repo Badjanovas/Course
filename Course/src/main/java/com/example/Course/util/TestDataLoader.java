@@ -4,13 +4,9 @@ import com.example.Course.model.Student;
 import com.example.Course.model.Teacher;
 import com.example.Course.repository.StudentRepository;
 import com.example.Course.repository.TeacherRepository;
-import com.example.Course.service.EmailSendingService;
-import com.example.Course.service.PdfService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -24,8 +20,6 @@ public class TestDataLoader implements CommandLineRunner {
 
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
-    private final EmailSendingService emailSendingService;
-
 
     @Override
     public void run(String... args) throws Exception{
@@ -57,8 +51,5 @@ public class TestDataLoader implements CommandLineRunner {
         teacher2.setStudents(studentsForTeacher2);
         teacherRepository.save(teacher1);
         teacherRepository.save(teacher2);
-
-        //emailSendingService.sendEmailWithAttachment("abadjanovas@gmail.com", "Hello", "Message from java.");
-        //emailSendingService.sendEmail("abadjanovas@gmail.com", "Hello", "Message from java.");
     }
 }

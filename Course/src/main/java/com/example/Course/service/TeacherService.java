@@ -24,7 +24,7 @@ public class TeacherService {
 
     public List<Teacher> getAllTeachers() throws NoTeachersFoundException {
         log.info("Looking for teachers.");
-        var teachers = teacherRepository.findAll();
+        final var teachers = teacherRepository.findAll();
         teacherValidator.exceptionEmptyTeacherList(teachers);
 
         log.info(teachers.size() + " teachers were found in DB.");
@@ -34,7 +34,7 @@ public class TeacherService {
     public Teacher findById(final Long id) throws NoTeachersFoundException, NotValidIdException {
         globalValidator.exceptionNotValidId(id);
         log.info("Looking for teacher with " + id + " id number.");
-        var teacher = teacherRepository.findById(id);
+        final var teacher = teacherRepository.findById(id);
         teacherValidator.exceptionEmptyTeacherObject(teacher, id);
         log.info(teacher.get().getFirstName() + " " + teacher.get().getLastName() + " was found in DB by id number: " + id + ".");
 
@@ -44,7 +44,7 @@ public class TeacherService {
     public List<Teacher> findTeachersByExperience(final Integer experience) throws NoTeachersFoundException, NotValidExperienceException {
         log.info("Looking for teachers that have more experience than " + experience + " months");
         teacherValidator.exceptionExperienceLessThanZero(experience);
-        var teachers = teacherRepository.findAll().stream()
+        final var teachers = teacherRepository.findAll().stream()
                 .filter(teacher -> teacher.getExperienceInMonths() > experience)
                 .collect(Collectors.toList());
         teacherValidator.exceptionEmptyTeacherList(teachers);
@@ -57,38 +57,38 @@ public class TeacherService {
         teacherValidator.exceptionMandatoryFieldsEmpty(teacher);
         teacherRepository.save(teacher);
 
-        log.info(teacher.getFirstName()+ " " + teacher.getLastName() + " was created and added to DB successfully. ");
+        log.info(teacher.getFirstName() + " " + teacher.getLastName() + " was created and added to DB successfully. ");
         return teacherRepository.findAll();
     }
 
     public List<Teacher> deleteTeacher(final Long id) throws NoTeachersFoundException, NotValidIdException {
         globalValidator.exceptionNotValidId(id);
-        var teacher = teacherRepository.findById(id);
+        final var teacher = teacherRepository.findById(id);
         teacherValidator.exceptionEmptyTeacherObject(teacher, id);
         teacherRepository.deleteById(id);
 
-        log.info(teacher.get().getFirstName()+ " " + teacher.get().getLastName() + " was deleted from DB successfully.");
+        log.info(teacher.get().getFirstName() + " " + teacher.get().getLastName() + " was deleted from DB successfully.");
         return teacherRepository.findAll();
 
     }
 
-    public Teacher updateTeacherById(final Long id, Teacher teacher) throws NoTeachersFoundException, NotValidIdException, SameInformationException {
+    public Teacher updateTeacherById(final Long id, final Teacher teacher) throws NoTeachersFoundException, NotValidIdException, SameInformationException {
         globalValidator.exceptionNotValidId(id);
         Teacher teacherToUpdate = teacherRepository.findById(id)
                 .orElseThrow(() -> new NoTeachersFoundException("Teacher with " + id + " id number doesn't exist."));
 
-        boolean isUpdated = updateTeacherIfChanged(teacher, teacherToUpdate);
+        final boolean isUpdated = updateTeacherIfChanged(teacher, teacherToUpdate);
 
-        if(isUpdated) {
+        if (isUpdated) {
             teacherRepository.save(teacherToUpdate);
             log.info("Teacher with id number " + teacher.getId() + " was updated successfully.");
-        }else {
+        } else {
             globalValidator.exceptionSameInformationProvided();
         }
         return teacherToUpdate;
     }
 
-    private boolean updateTeacherIfChanged(Teacher teacher, Teacher teacherToUpdate) {
+    private boolean updateTeacherIfChanged(final Teacher teacher, final Teacher teacherToUpdate) {
         boolean isUpdated = false;
 
         if (!Objects.equals(teacherToUpdate.getFirstName(), teacher.getFirstName())) {
